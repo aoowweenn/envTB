@@ -151,12 +151,12 @@ class RealSpaceWaveFunctionFourierTransform:
                
 
         for orbnr, orb in \
-            self.wannier_real_space_orbitals.orbitals.iteritems():
+            self.wannier_real_space_orbitals.orbitals.items():
             self.fourier_transformations[orbnr] = orb.fourier_transform(wave_function_shape, axes=transform_axes)
             
         self.orbital_reciprocal_latticevecs, self.orbital_fourier_grid = \
-            self.fourier_transformations.values()[0].reciprocal_latticevecs, \
-            self.fourier_transformations.values()[0].transformed_grid            
+            list(self.fourier_transformations.values())[0].reciprocal_latticevecs, \
+            list(self.fourier_transformations.values())[0].transformed_grid            
 
     def __fill_shape_to_3d(self, shape):
         if len(shape) == 1:
@@ -207,7 +207,7 @@ class RealSpaceWaveFunctionFourierTransform:
         transformed_coefficients = {}
         transformed_wave_functions = {}
         for orbnr, orb in \
-            self.wannier_real_space_orbitals.orbitals.iteritems():
+            self.wannier_real_space_orbitals.orbitals.items():
             # XXX: if you transform several wave functions, you can save this
             wave_function = numpy.array(wave_functions[orbnr], copy=False)
             transformed_wave_function = numpy.fft.fftn(wave_function)
@@ -235,7 +235,7 @@ class ZigzagGNRHelper:
 
         supercell_ham: should be set to False, to avoid calculation of calculate supercell_hamiltonian
         """
-        print height, divmod(height, 2), length, divmod(length, 2)
+        print(height, divmod(height, 2), length, divmod(length, 2))
         
         #if height % 2 != 0 or length % 2 != 0:
         #  raise ValueError('height and length must be even numbers.')
@@ -262,7 +262,7 @@ class ZigzagGNRHelper:
         Returns the number of 2-cells (zigzag basis cell containing two
         graphene cells), including padding at top and bottom.
         """
-        print nr_of_rings 
+        print(nr_of_rings) 
         if nr_of_rings % 2 == 0:
             return nr_of_rings/2 + 1
         else:
@@ -360,7 +360,7 @@ class ZigzagGNRHelper:
 
         coords = self.split_sublattices(orbpos,2)[0]
         shiftvecs = self.__shift_vectors(coords, vecs, invvecs, lattice_vecs, invlattice_vecs)
-        enumeration=numpy.array([range(len(shiftvecs))]).transpose()
+        enumeration=numpy.array([list(range(len(shiftvecs)))]).transpose()
         l=numpy.round(numpy.hstack((numpy.dot(shiftvecs,invgr_vecs),enumeration))*3)/3
         ind=numpy.lexsort((l[:,0],l[:,1]))
         return l[ind][:,3]
@@ -442,7 +442,7 @@ class GNRSimpleFourierTransform:
         nnfile: nearest-neighbour file which contains the graphene geometry.
         """
         height=ZigzagGNRHelper.rings_to_2cells(ZigzagGNRHelper.atoms_to_rings(height_nr_atoms))
-        print height
+        print(height)
         length=length_nr_slices 
         return ZigzagGNRHelper(nnfile, height, length, paddingx=0, paddingy=0, supercell_ham=False, ribbon_ham=False)
 
@@ -507,8 +507,8 @@ class GNRSimpleFourierTransform:
 
         coeffs: Dictionary containing numpy arrays.
         """
-        transf_sum = numpy.zeros(coeffs.values()[0].shape, dtype=coeffs.values()[0].dtype)
-        for transf in coeffs.values():
+        transf_sum = numpy.zeros(list(coeffs.values())[0].shape, dtype=list(coeffs.values())[0].dtype)
+        for transf in list(coeffs.values()):
             transf_sum += transf
         return transf_sum
 
@@ -534,7 +534,7 @@ class GNRSimpleFastFourierTransform:
         self.Nx = Nx
         self.Ny = Ny
         if Ny%4 != 0:
-            raise(ValueError, 'Ny should be devidable by 4')
+            raise ValueError
         if wave_function is not None:
             self.wave_function = wave_function
             self.wave_function_fourier, self.wave_function_fourier_sublattices = self.make_fourier()
@@ -547,8 +547,8 @@ class GNRSimpleFastFourierTransform:
         wf_arr_split = [numpy.append(splitvec, [0, 0]) for splitvec in wf_arr_split]
         wf_arr_split = [numpy.insert(splitvec, [0, 0], 0) for splitvec in wf_arr_split]
         wf_arr_fl = numpy.array(wf_arr_split).flatten()
-        wf_fl = {i: numpy.array(wf_arr_fl[i::4]).reshape(self.Nx, self.Ny/4+1) for i in xrange(4)}
-        wf_four = {i: numpy.fft.fft2(wf_fl[i]) for i in xrange(4)}
+        wf_fl = {i: numpy.array(wf_arr_fl[i::4]).reshape(self.Nx, self.Ny/4+1) for i in range(4)}
+        wf_four = {i: numpy.fft.fft2(wf_fl[i]) for i in range(4)}
         
         a = 1.42
         kxmax = numpy.sqrt(3.0)*2.0*numpy.pi/3.0/a
@@ -579,7 +579,7 @@ class GNRSimpleFastFourierTransform:
         plt.imshow(abs(wf_per[:,::-1]).T, interpolation='nearest', aspect='auto', 
                     extent=[0.0, numpy.sqrt(3)*2.*N*numpy.pi/3./a, 0.0, 2.*N*numpy.pi/3./a])
         #plt.colorbar()
-        plot_indexes = [[nx, ny] for nx in xrange(0, 2*(N+1), 2) for ny in xrange(0, 2*(N+1), 2) if (nx-ny)%4 == 0]
+        plot_indexes = [[nx, ny] for nx in range(0, 2*(N+1), 2) for ny in range(0, 2*(N+1), 2) if (nx-ny)%4 == 0]
         [plt.plot(BZ[0]+numpy.sqrt(3)*nx*numpy.pi/3./a, BZ[1]+ny*numpy.pi/3./a, 'w') for nx,ny in plot_indexes]
         
         plt.plot([0.0, numpy.sqrt(3)*2.*numpy.pi/3./a, numpy.sqrt(3)*2.*numpy.pi/3./a], 
@@ -597,9 +597,9 @@ class GNRSimpleFastInvertFourierTransform:
             self.wave_function_fourier = wave_function_fourier
         else:
             if repeat:
-                self.wave_function_fourier ={i: wave_function_fourier for i in xrange(4)}
+                self.wave_function_fourier ={i: wave_function_fourier for i in range(4)}
             else:
-                self.wave_function_fourier = {i: numpy.zeros((Nx, Ny/4+1), dtype = complex)  for i in xrange(4)}
+                self.wave_function_fourier = {i: numpy.zeros((Nx, Ny/4+1), dtype = complex)  for i in range(4)}
                 if wave_function_fourier is not None:
                     self.wave_function_fourier[0] = wave_function_fourier
         self.Nx = Nx
@@ -612,7 +612,7 @@ class GNRSimpleFastInvertFourierTransform:
         return numpy.array(wf_arr_i_split).flatten()
 
     def inverse_fourier_transform(self):
-        wf_i = {i: numpy.fft.ifft2(self.wave_function_fourier[i]).flatten() for i in xrange(4)}
+        wf_i = {i: numpy.fft.ifft2(self.wave_function_fourier[i]).flatten() for i in range(4)}
         wf_arr_i = numpy.zeros(4*len(wf_i[0]), dtype=complex)
         wf_arr_i[::4] = wf_i[0]
         wf_arr_i[1::4] = wf_i[1]

@@ -22,5 +22,5 @@ def disentangle_mo_set(orbs):
     half_len = len(orbs)/2
     original = [(orb1, orb2) for orb1, orb2 in zip(orbs[:half_len],reversed(orbs[-half_len:]))]
     disentangled = [disentangle_mos(orb1, orb2) for orb1, orb2 in zip(orbs[:half_len],reversed(orbs[-half_len:]))]
-    print [orb1.occupation+orb2.occupation for orb1, orb2 in zip(orbs[:half_len],reversed(orbs[-half_len:]))]
+    print([orb1.occupation+orb2.occupation for orb1, orb2 in zip(orbs[:half_len],reversed(orbs[-half_len:]))])
     return disentangled, original

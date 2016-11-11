@@ -4,7 +4,7 @@ from envtb.wannier90 import w90hamiltonian
 import numpy
 from envtb.quantumcapacitance import electrostatics, quantumcapacitance
 from matplotlib import pyplot
-from calculations.graphenequantumcapacitance import ClassicalCapacitance
+from .calculations.graphenequantumcapacitance import ClassicalCapacitance
 """
 This file contains functions for often used procedures.
 They can also be considered as use cases.
@@ -196,7 +196,7 @@ def plot_zigzag_graphene_nanoribbon_pz_bandstructure(
 
         ham4 = ham3.create_modified_hamiltonian(
             ham3.drop_dimension_from_cell_list(1),
-            usedorbitals=range(1, ham3.nrorbitals()-get_rid_of))
+            usedorbitals=list(range(1, ham3.nrorbitals()-get_rid_of)))
 
         path = ham4.point_path([[0, 0, 0], [0.5, 0, 0]], 100)
         if output is not None:
@@ -299,7 +299,7 @@ def plot_zigzag_graphene_nanoribbon_pz_bandstructure_nn(
 
     ham4 = ham3.create_modified_hamiltonian(
         ham3.drop_dimension_from_cell_list(1),
-        usedorbitals=range(1, ham3.nrorbitals()-get_rid_of),
+        usedorbitals=list(range(1, ham3.nrorbitals()-get_rid_of)),
         magnetic_B=magnetic_B)
 
     path = ham4.point_path([[-0.5, 0, 0], [0.5, 0, 0]], 100)
@@ -405,7 +405,7 @@ def SimpleElectrostaticProblem():
     solver, inhomogeneity = cont.lu_solver()
     sol = solver(inhomogeneity)
     pyplot.plot(sol)
-    print sol
+    print(sol)
 
 
 def PotentialOfGluedRectangles2D():

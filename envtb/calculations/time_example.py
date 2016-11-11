@@ -19,8 +19,8 @@ def propagate_wave_function(wf_init, hamilt, NK=10, dt=1., maxel=None,
     wf_final, dt_new, NK_new = prop.propagate(
         num_error=num_error, regime=regime)
     
-    print 'dt_old = %(dt)g; dt_new = %(dt_new)g; NK_old = %(NK)g; NK_new = %(NK_new)g' % vars()
-    print 'norm', wf_final.check_norm()  #np.dot(np.transpose(np.conjugate(wf_final)), wf_final)
+    print('dt_old = %(dt)g; dt_new = %(dt_new)g; NK_old = %(NK)g; NK_new = %(NK_new)g' % vars())
+    print('norm', wf_final.check_norm())  #np.dot(np.transpose(np.conjugate(wf_final)), wf_final)
     
     wf_final.plot_wave_function(maxel)
     plt.axes().set_aspect('equal')
@@ -66,7 +66,7 @@ def propagate_gauss_TB(Nx=50, Ny=40, frame_num=100):
     plt.savefig(directory+'0%d_2d.png' % 0)
     plt.close()
 
-    for i in xrange(frame_num):
+    for i in range(frame_num):
     
         wf_init = wf_final
         wf_final = propagate_wave_function(wf_init, ham, maxel = maxel, 
@@ -86,7 +86,7 @@ def propagate_el_den_TB(Nx=50, Ny=40, mu=0.05, frame_num=100):
     plt.savefig('../../../../Desktop/pics_2d/TB/0%d_2d.png' % 0)
     plt.close()
                     
-    for i in xrange(frame_num):
+    for i in range(frame_num):
         
         potential = envtb.ldos.potential.Potential1DFromFunction(
             lambda x: -5. * (Ny/2 - x) * 2. / Ny * np.sin(0.1 * i))
@@ -125,8 +125,8 @@ def propagate_gauss_graphene(Nx=30, Ny=30, frame_num=100):
     dt_new = 0.5
     NK_new = 12
     
-    for i in xrange(frame_num):
-        print 'frame %(i)d' % vars()
+    for i in range(frame_num):
+        print('frame %(i)d' % vars())
         wf_init = wf_final
         wf_final, dt_new, NK_new = propagate_wave_function(
             wf_init, ham, NK=NK_new, dt=dt_new, maxel = maxel, regime='SIL', 
@@ -147,7 +147,7 @@ def propagate_el_den_graphene(Nx=50, Ny=40, mu=0.01, frame_num=200):
     plt.savefig('../../../../Desktop/pics_2d/graphene_el_den/0%d_2d.png' % 0)
     plt.close()
         
-    for i in xrange(frame_num):
+    for i in range(frame_num):
         
         potential = envtb.ldos.potential.Potential1DFromFunction(
             lambda x: -10. * (Ny/2 - x) * 2. / Ny * np.sin(0.05 * i))
@@ -187,7 +187,7 @@ def define_zigzag_ribbon_w90(nnfile, width, length, magnetic_B=None):
     
     ham4=ham3.create_modified_hamiltonian(
         ham3.drop_dimension_from_cell_list(1),
-        usedorbitals=range(1,ham3.nrorbitals()-get_rid_of),
+        usedorbitals=list(range(1,ham3.nrorbitals()-get_rid_of)),
         magnetic_B=magnetic_B)
        
     ham5=ham4.create_supercell_hamiltonian(
@@ -219,7 +219,7 @@ def propagate_gauss_graphene_W90(Nx=30, Ny=20, magnetic_B=None,
     plt.savefig('../../../../Desktop/pics_2d/grapheneW90/0%d_2d.png' % 0)
     plt.close()
 
-    for i in xrange(frame_num):
+    for i in range(frame_num):
     
         wf_init = wf_final
         wf_final = propagate_wave_function(wf_init, ham, maxel=maxel,
@@ -243,7 +243,7 @@ def propagate_el_den_graphene_W90(Nx=50, Ny=40, magnetic_B=None, mu=0.01,
     plt.savefig('../../../../Desktop/pics_2d/grapheneW90_el_den/0%d_2d.png' % 0)
     plt.close()
 
-    for i in xrange(frame_num):
+    for i in range(frame_num):
     
         wf_init = wf_final
         wf_final = propagate_wave_function(wf_init, ham, maxel=maxel, 

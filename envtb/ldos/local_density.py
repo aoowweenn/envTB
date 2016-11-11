@@ -1,5 +1,5 @@
 import numpy as np
-import greens_function
+from . import greens_function
 import matplotlib.pylab as plt
 
 class LocalDensityOfStates:

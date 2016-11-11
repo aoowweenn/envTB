@@ -2,9 +2,9 @@ import numpy as np
 try:
     import matplotlib.pylab as plt
 except:
-    print 'Warning(lanczos): no module matplotlib'
+    print('Warning(lanczos): no module matplotlib')
     pass
-import wave_function
+from . import wave_function
 
 
 class LanczosPropagator():
@@ -78,7 +78,7 @@ class LanczosPropagator():
         r -= self.alpha[0] * self.Q[-1]
         self.betta.append(np.sqrt(np.dot(np.conjugate(np.transpose(r)), r)))
 
-        for i in xrange(1, self.NK):
+        for i in range(1, self.NK):
             v = self.Q[-1]
             self.Q.append(r / self.betta[-1])
             r = self.__applyHwf() - self.betta[-1]*v
@@ -179,7 +179,7 @@ class LanczosPropagator():
 
         U = np.zeros((len(w),len(w)), dtype = complex)
 
-        for i in xrange(len(w)):
+        for i in range(len(w)):
             atmp = dt * w[i] / hbar
             U[:,i] = v[:,i] * complex(np.cos(atmp), -np.sin(atmp))
 
@@ -247,7 +247,7 @@ class LanczosPropagator():
                 #print 'num_error', conver
 
         wfk = np.zeros(len(self.Q[0]), dtype = complex)
-        for i in xrange(0, self.NK):
+        for i in range(0, self.NK):
             wfk[:] += wf_krylov[i] * self.Q[i]
 
         wf_out = wave_function.WaveFunction(wfk)

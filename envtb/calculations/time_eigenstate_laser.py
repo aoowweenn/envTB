@@ -11,7 +11,7 @@ import envtb.wannier90.w90hamiltonian as w90hamiltonian
 ##for 1THz pulse (amp=0.5*10**(-2)) use 0.004*10^(-12) and 5500 frames
 ##for 10THz pulse (amp=0.5*10**(-2)) use 0.001*10^(-12) and 2500 frames
 dt = 0.001 * 10**(-12)
-print dt
+print(dt)
 NK = 12
 laser_freq = 10. * 10**(12)
 laser_amp = 0.5 * 10**(-2)
@@ -32,9 +32,9 @@ def propagate_wave_function(wf_init, hamilt, NK=10, dt=1., maxel=None,
     wf_final, dt_new, NK_new = prop.propagate(
         num_error=num_error, regime=regime)
 
-    print 'dt_old = %(dt)g; dt_new = %(dt_new)g; NK_old = %(NK)g; NK_new = %(NK_new)g'\
-            % vars()
-    print 'norm', wf_final.check_norm()
+    print('dt_old = %(dt)g; dt_new = %(dt_new)g; NK_old = %(NK)g; NK_new = %(NK_new)g'\
+            % vars())
+    print('norm', wf_final.check_norm())
 
     if file_out is None:
         return wf_final, dt_new, NK_new
@@ -58,8 +58,8 @@ def propagate_graphene_pulse(Nx=20, Ny=20, frame_num=10, magnetic_B=None):
         Store eigenvalue_problem
     '''
     fout = open('eigenvalue_problem.out', 'w')
-    for i in xrange(Nall):
-        fout.writelines(`w[i]`+'   '+`v[:,i].tolist()`+'\n')
+    for i in range(Nall):
+        fout.writelines(repr(w[i])+'   '+repr(v[:,i].tolist())+'\n')
 
 
     ''' Make vector potential'''
@@ -75,7 +75,7 @@ def propagate_graphene_pulse(Nx=20, Ny=20, frame_num=10, magnetic_B=None):
 
     Nthread = Nall / proc
 
-    N_range = range(myid * Nthread, (myid + 1) * Nthread, 10)
+    N_range = list(range(myid * Nthread, (myid + 1) * Nthread, 10))
 
     for Nstate in N_range:
 
@@ -106,7 +106,7 @@ def propagate_graphene_pulse(Nx=20, Ny=20, frame_num=10, magnetic_B=None):
         import time
 
         '''main loop'''
-        for i in xrange(frame_num):
+        for i in range(frame_num):
 
             #print 'frame %(i)d' % vars()
             time_counter += dt_new

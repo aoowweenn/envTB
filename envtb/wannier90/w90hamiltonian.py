@@ -14,7 +14,7 @@ try:
     from matplotlib.path import Path
     import matplotlib.patches as patches
 except:
-    print 'Warning(w90hamiltonian): no module matplotlib'
+    print('Warning(w90hamiltonian): no module matplotlib')
     pass
 import itertools
 from scipy import sparse
@@ -181,11 +181,11 @@ class Hamiltonian:
         else:
             hopping=numpy.zeros(max(max(defaulthopping.keys()),max(customhopping.keys()))+1)
         
-        for i,v in defaulthopping.items():
+        for i,v in list(defaulthopping.items()):
             hopping[i]=v
         
         if customhopping!=None:
-            for key,val in customhopping.items():
+            for key,val in list(customhopping.items()):
                 hopping[key]=val
             
         nrbands=len(orbitalspreads)
@@ -223,7 +223,7 @@ class Hamiltonian:
         
         defaulthoppingindices=[int(x[0]) for x in defaulthoppingstr]
         defaulthoppingvals=[float(x[1]) for x in defaulthoppingstr]
-        defaulthopping=dict(zip(defaulthoppingindices,defaulthoppingvals))
+        defaulthopping=dict(list(zip(defaulthoppingindices,defaulthoppingvals)))
         
         return latticevecs,nndata,orbitalspreads,orbitalpositions,defaulthopping
         
@@ -364,12 +364,12 @@ class Hamiltonian:
         output=open(outputfile,'w')
         
         if usedhoppingcells == 'all':
-            usedunitcellnrs=range(len(self.__unitcellnumbers))
+            usedunitcellnrs=list(range(len(self.__unitcellnumbers)))
         else:
             usedunitcellnrs=self.__unitcellcoordinates_to_nrs(usedhoppingcells)
             
         if usedorbitals=='all':
-            orbitalnrs=range(self.__nrbands)
+            orbitalnrs=list(range(self.__nrbands))
         else:
             orbitalnrs=usedorbitals
             
@@ -479,14 +479,14 @@ class Hamiltonian:
         """
         
         if usedhoppingcells == 'all':
-            usedunitcellnrs=range(len(self.__unitcellnumbers))
+            usedunitcellnrs=list(range(len(self.__unitcellnumbers)))
         else:
             usedunitcellnrs=self.__unitcellcoordinates_to_nrs(usedhoppingcells)
         
         if basis=='d':
             k=self.__latticevecs.direct_to_cartesian_reciprocal(k)
             
-        orbitalnrs=range(self.__nrbands)
+        orbitalnrs=list(range(self.__nrbands))
         
         bloch_phases=self.__bloch_phases(k)
         #I think this needs lil_matrix, coo_matrix didn't work.
@@ -968,8 +968,8 @@ class Hamiltonian:
         if name=='hexagonal':
             path = [
                     ('$\Gamma$',[0,0,0]),
-                    ('K',[1./3,-1./3,0]),
                     ('M',[0.5,0,0]),
+                    ('K',[1./3,1./3,0]),
                     ('$\Gamma$',[0,0,0])
                     ]
         elif name=='fcc':
@@ -1121,7 +1121,7 @@ class Hamiltonian:
         oldorbitalspreads=self.__orbitalspreads #Must be List, not numpy array!
         
         if usedhoppingcells == 'all':
-            usedunitcellnrs=range(len(self.__unitcellnumbers))
+            usedunitcellnrs=list(range(len(self.__unitcellnumbers)))
         else:
             usedunitcellnrs=self.__unitcellcoordinates_to_nrs(usedhoppingcells)
         
@@ -1136,7 +1136,7 @@ class Hamiltonian:
         unitcellnumbers=[]
         
         if usedorbitals=='all':
-            orbitalnrs=range(self.__nrbands)
+            orbitalnrs=list(range(self.__nrbands))
         else:
             orbitalnrs=usedorbitals
             
@@ -1161,7 +1161,7 @@ class Hamiltonian:
         """
         for cellnr,cell in enumerate(numpy.array(cellcoordinates)):
             #Loop over old blocks
-            for i,oldnumber in zip(range(len(oldunitcellmatrixblocks)),numpy.array(oldunitcellnumbers)):
+            for i,oldnumber in zip(list(range(len(oldunitcellmatrixblocks))),numpy.array(oldunitcellnumbers)):
                 if i in usedunitcellnrs:                        
                     hopto=cell+oldnumber
                     
@@ -1852,7 +1852,7 @@ class WannierRealSpaceOrbitals(LocalizedOrbitalSet):
         """
         self.orbitals = {}
         for xsffile in self.xsffiles:
-            print '\rread ',xsffile,
+            print('\rread ',xsffile, end=' ')
             orbid=int(re.search('wannier90_(.*).xsf',xsffile).groups()[0])
             self.orbitals[orbid] = self.__read_wannier90_orbital_file(xsffile)
             
@@ -1861,8 +1861,8 @@ class WannierRealSpaceOrbitals(LocalizedOrbitalSet):
         if len(woutfiles) > 0:
             spreads, positions = self.__orbital_spreads_and_positions(woutfiles[0])
                         
-            for i,spread,position in zip(range(1,len(spreads)+1),spreads,positions):
-                if i in self.orbitals.keys():
+            for i,spread,position in zip(list(range(1,len(spreads)+1)),spreads,positions):
+                if i in list(self.orbitals.keys()):
                     self.orbitals[i].set_position(numpy.array(position))
                     self.orbitals[i].set_spread(spread)    
                     self.orbitals[i].set_number(i)        
@@ -1942,14 +1942,14 @@ class WannierRealSpaceOrbitals(LocalizedOrbitalSet):
         return spreads,positions
         
     def print_positions_and_spreads(self):
-        for i, orb in self.orbitals.iteritems():
+        for i, orb in self.orbitals.items():
             x,y,z = orb.position
-            print 'orbital',i,': position',orb.position, 'spread', orb.spread
+            print('orbital',i,': position',orb.position, 'spread', orb.spread)
             
     def plot_positions(self):
         fig=pyplot.figure()
         ax = fig.add_subplot(1,1,1)
-        for i, orb in gnrorbset.orbitals.iteritems():
+        for i, orb in gnrorbset.orbitals.items():
             x,y,z = orb.position
             ax.text(x,y+0.12,str(i),horizontalalignment='center')
             ax.plot([x], [y], 'r.', markersize=10.0)
@@ -2001,7 +2001,7 @@ class Wannier90WoutFile:
         
     def print_positions_and_spreads(self):
         for i in range(len(self.spreads)):
-            print 'orbital',i+1,': position',self.positions[i], 'spread', self.spreads[i]
+            print('orbital',i+1,': position',self.positions[i], 'spread', self.spreads[i])
             
     def plot_positions(self, ax):
         for i in range(len(self.spreads)):

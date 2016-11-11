@@ -19,14 +19,14 @@ def make_HI(n, t):
 def make_H(H0, HI, nx):
 
     ny = H0.shape[0]
-    print ny
+    print(ny)
     #print H0
     #H = np.zeros((nx*ny,nx*ny), dtype = complex)
     H = scipy.sparse.lil_matrix((nx*ny,nx*ny), dtype=complex)
 
     HIT = HI.transpose().conjugate()
 
-    for i in xrange(nx):
+    for i in range(nx):
         j = i * ny
 
         H[j:j+ny,j:j+ny] = H0[:,:]
@@ -56,7 +56,7 @@ def eigenvalue_problem(H0, HI):
     k = np.arange(-2., 2., 0.01)
     E = []
     dx = a
-    for i in xrange(len(k)):
+    for i in range(len(k)):
         A = H0 + HI * complex(np.cos(k[i]*dx), np.sin(k[i]*dx)) + np.transpose(HI) * complex(np.cos(k[i]*dx), -np.sin(k[i]*dx)) 
         w, v = np.linalg.eig(A)
     #plt.plot(abs(w))
@@ -64,7 +64,7 @@ def eigenvalue_problem(H0, HI):
 
     E = np.array(E)
    
-    for i in xrange(len(E[0,:])):
+    for i in range(len(E[0,:])):
         plt.plot(k, E[:,i].real, 'o', ms=1.)
    
     return None

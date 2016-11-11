@@ -3,7 +3,7 @@ import envtb.ldos.plotter
 try:
     import matplotlib.pylab as plt
 except:
-    print 'Warning(wave_function): no module matplotlib'
+    print('Warning(wave_function): no module matplotlib')
     pass
 
 class WaveFunction(object):
@@ -43,11 +43,11 @@ class WaveFunction(object):
         Return:
         x_aver, y_aver
         """
-        f_aver = sum([np.abs(self.wf1d[i])**2 for i in xrange(len(self.wf1d))])
+        f_aver = sum([np.abs(self.wf1d[i])**2 for i in range(len(self.wf1d))])
         x_aver = sum([np.abs(self.wf1d[i])**2 * self.coords[i][0]
-                      for i in xrange(len(self.wf1d))]) / f_aver
+                      for i in range(len(self.wf1d))]) / f_aver
         y_aver = sum([np.abs(self.wf1d[i])**2 * self.coords[i][1]
-                      for i in xrange(len(self.wf1d))]) / f_aver
+                      for i in range(len(self.wf1d))]) / f_aver
 
         return x_aver, y_aver
 
@@ -56,7 +56,7 @@ class WaveFunction(object):
         wf_prime_x = []
         wf_prime_y = []
         n = len(self.wf1d)
-        for i in xrange(n-1):
+        for i in range(n-1):
             if abs(self.coords[i+1][0] - self.coords[i][0]) > 0:
                 wf_prime_x.append((self.wf1d[i+1]-self.wf1d[i]) / (self.coords[i+1][0] - self.coords[i][0]))
             else:
@@ -95,12 +95,12 @@ class WaveFunction(object):
 
     def expand_wave_function(self, v):
         return [np.abs(np.dot(np.conjugate(np.transpose(v[:,i])), self.wf1d))
-                for i in xrange(len(v[0,:]))]
+                for i in range(len(v[0,:]))]
 
     @staticmethod
     def save_wave_function_data(wave_function, file_out, param=None):
-        print 'Hi!'
-        file_out.writelines(`param`+'   '+`wave_function.tolist()`+'\n')
+        print('Hi!')
+        file_out.writelines(repr(param)+'   '+repr(wave_function.tolist())+'\n')
         return None
 
     def save_wave_function_pic(self, pic_out, maxel=None, figuresize=(20,10), **kwrds):
@@ -115,7 +115,7 @@ class WaveFunction(object):
 
     def save_wave_function_expansion(self, file_out, v):
         a = self.expand_wave_function(v)
-        file_out.writelines(`a`+'\n')
+        file_out.writelines(repr(a)+'\n')
         return None
 
     def save_coords_current(self, file_out, A):
@@ -158,7 +158,7 @@ class GaussianWavePacket(WaveFunction):
 
         wp1d = np.array([
             self.gauss_function(self.coords[k][0], self.coords[k][1])
-            for k in xrange(self.Ntot)])
+            for k in range(self.Ntot)])
 
         norm = np.sum(np.dot(np.transpose(np.conjugate(wp1d)), wp1d))
         wp1d = wp1d / np.sqrt(norm)
@@ -187,13 +187,13 @@ class WaveFunction0(WaveFunction):
         w, v = self.ham.eigenvalue_problem()
         wf0 = np.zeros(len(v[:,0]), dtype = complex)
         count = 0
-        for i in xrange(len(w)):
+        for i in range(len(w)):
             if w[i] <= mu:
                 count += 1
                 #ldos.plotter.Plotter().plot_density(ham.v[:,i], ham.coords)
                 #plt.show()
                 wf0[:] += v[:,i]
-        print count
+        print(count)
         norm = np.sum(np.abs(wf0)**2)
         return wf0 / np.sqrt(norm)
 

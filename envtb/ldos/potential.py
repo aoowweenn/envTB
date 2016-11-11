@@ -134,7 +134,7 @@ class RandomSmoothPotential2D(Potential2D):
         self.sy = int(self.Ly)*2.0
         np.random.seed(randseed)
         self.cor = self.sx*cor/self.Lx
-        print self.cor
+        print(self.cor)
         z = np.random.uniform(low=-amp/2.0, high = amp/2.0, size=self.sx*self.sy)
         self.rand_pot = (gaussian_filter(z.reshape(self.sx, self.sy), sigma=self.cor/np.sqrt(2))*self.cor)
 

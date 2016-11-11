@@ -40,7 +40,7 @@ def make_H0(n):
         np.diag(g4 * np.ones(n_half-2, dtype = complex), 2) +\
         np.diag(g4 * np.ones(n_half-2, dtype = complex), -2)
    
-   for i in xrange(1, n_half, 2):
+   for i in range(1, n_half, 2):
       mI[i,i] = g1
       try:
          mI[i, i+2] = g3
@@ -74,7 +74,7 @@ def make_HI(n):
         np.diag(g5 * np.ones(n_half-3, dtype = complex), -3)
 
 
-   for i in xrange(1, n_half+1, 2):
+   for i in range(1, n_half+1, 2):
 
       try: mI[i,i] = g3
       except: pass

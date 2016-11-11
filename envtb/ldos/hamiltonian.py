@@ -1,13 +1,13 @@
 import numpy as np
-import make_matrix as mm
-import make_matrix_graphene as mmg
-import make_matrix_graphene_armchair_5nn as mmg_a
-import potential
+from . import make_matrix as mm
+from . import make_matrix_graphene as mmg
+from . import make_matrix_graphene_armchair_5nn as mmg_a
+from . import potential
 import copy
 try:
     import matplotlib.pylab as plt
 except:
-    print 'Warning(hamiltonian): no module matplotlib'
+    print('Warning(hamiltonian): no module matplotlib')
     pass
 import scipy.sparse
 from scipy.sparse import linalg
@@ -94,10 +94,10 @@ class GeneralHamiltonian(object):
             #                               shape=(self.Ntot,self.Ntot))
             if in_x:
                 mdia = np.array([U(self.coords[i][0])
-                                for i in xrange(self.Ntot)])
+                                for i in range(self.Ntot)])
             else:
                 mdia = np.array([U(self.coords[i][1])
-                                for i in xrange(self.Ntot)])
+                                for i in range(self.Ntot)])
 
             if sign_variation:
                 mdia[::2] = -1.0 * mdia[::2]
@@ -107,7 +107,7 @@ class GeneralHamiltonian(object):
 
         else:
             mdia = np.array([U([self.coords[i][0], self.coords[i][1]])
-                                for i in xrange(self.Ntot)])
+                                for i in range(self.Ntot)])
 
             if sign_variation:
                 mdia[::2] = -1.0 * mdia[::2]
@@ -127,7 +127,7 @@ class GeneralHamiltonian(object):
 
         if isinstance(U, potential.Potential1D):
             mdia = np.array([U(self.coords[i][1])
-                                for i in xrange(self.Ntot-1)])
+                                for i in range(self.Ntot-1)])
 
             mdia = scipy.sparse.diags(np.array([mdia,mdia]), np.array([-1, 1]), shape=(self.Ntot,self.Ntot))
             mt = mt + mdia.tocsr()
@@ -150,19 +150,19 @@ class GeneralHamiltonian(object):
         phase_matrix_0 = np.exp(1j * conversion_factor * A[0] *
                              np.array([self.coords[nonzero_elements_0[1][k]][0] -
                                        self.coords[nonzero_elements_0[0][k]][0]
-                                       for k in xrange(len(nonzero_elements_0[0]))]))*\
+                                       for k in range(len(nonzero_elements_0[0]))]))*\
                       np.exp(1j * conversion_factor * A[1] *
                              np.array([self.coords[nonzero_elements_0[1][k]][1] -
                                        self.coords[nonzero_elements_0[0][k]][1]
-                                       for k in xrange(len(nonzero_elements_0[0]))]))
+                                       for k in range(len(nonzero_elements_0[0]))]))
         phase_matrix_I = np.exp(1j * conversion_factor * A[0] *
                              np.array([self.coords[nonzero_elements_I[1][k]+self.Ny][0] -
                                        self.coords[nonzero_elements_I[0][k]][0]
-                                       for k in xrange(len(nonzero_elements_I[0]))]))*\
+                                       for k in range(len(nonzero_elements_I[0]))]))*\
                       np.exp(1j * conversion_factor * A[1] *
                              np.array([self.coords[nonzero_elements_I[1][k]+self.Ny][1] -
                                        self.coords[nonzero_elements_I[0][k]][1]
-                                       for k in xrange(len(nonzero_elements_I[0]))]))
+                                       for k in range(len(nonzero_elements_I[0]))]))
         m_0_data = self.m0.data * phase_matrix_0
         m_I_data = self.mI.data * phase_matrix_I
 
@@ -182,26 +182,26 @@ class GeneralHamiltonian(object):
                                                       self.coords[nonzero_elements_0[0][k]][0]) *\
                                               (self.coords[nonzero_elements_0[0][k]][1] +
                                                 self.coords[nonzero_elements_0[1][k]][1])
-                                              for k in xrange(len(nonzero_elements_0[0]))]))
+                                              for k in range(len(nonzero_elements_0[0]))]))
              phase_matrix_I = np.exp(1j * conversion_factor * magnetic_B *
                                    np.array([-0.5 * (self.coords[nonzero_elements_I[1][k] + self.Ny][0] -
                                                       self.coords[nonzero_elements_I[0][k]][0]) *\
                                               (self.coords[nonzero_elements_I[0][k] + self.Ny][1] +
                                                 self.coords[nonzero_elements_I[1][k]][1])
-                                              for k in xrange(len(nonzero_elements_I[0]))]))
+                                              for k in range(len(nonzero_elements_I[0]))]))
         elif gauge == 'landau_y':
             phase_matrix_0 = np.exp(1j * conversion_factor * magnetic_B *
                                   np.array([0.5 * (self.coords[nonzero_elements_0[1][k]][0] +
                                                     self.coords[nonzero_elements_0[0][k]][0]) *\
                                              (self.coords[nonzero_elements_0[1][k]][1] -
                                                self.coords[nonzero_elements_0[0][k]][1])
-                                              for k in xrange(len(nonzero_elements_0[0]))]))
+                                              for k in range(len(nonzero_elements_0[0]))]))
             phase_matrix_I = np.exp(1j * conversion_factor * magnetic_B *
                                   np.array([0.5 * (self.coords[nonzero_elements_I[1][k] + self.Ny][0] +
                                                     self.coords[nonzero_elements_I[0][k]][0]) *\
                                              (self.coords[nonzero_elements_I[1][k] + self.Ny][1] -
                                                self.coords[nonzero_elements_I[0][k]][1])
-                                              for k in xrange(len(nonzero_elements_I[0]))]))
+                                              for k in range(len(nonzero_elements_I[0]))]))
 
         m_0_data = self.m0.data * phase_matrix_0
         m_I_data = self.mI.data * phase_matrix_I
@@ -230,11 +230,11 @@ class GeneralHamiltonian(object):
         phase_matrix = np.exp(1j * conversion_factor * A[0] *
                              np.array([self.coords[nonzero_elements[1][k]][0] -
                                        self.coords[nonzero_elements[0][k]][0]
-                                       for k in xrange(len(nonzero_elements[0]))]))*\
+                                       for k in range(len(nonzero_elements[0]))]))*\
                       np.exp(1j * conversion_factor * A[1] *
                              np.array([self.coords[nonzero_elements[1][k]][1] -
                                        self.coords[nonzero_elements[0][k]][1]
-                                       for k in xrange(len(nonzero_elements[0]))]))
+                                       for k in range(len(nonzero_elements[0]))]))
         m_pot_data = self.mtot.data * phase_matrix
         m_pot = scipy.sparse.csr_matrix((m_pot_data, nonzero_elements), shape=(self.Ntot, self.Ntot))
 
@@ -253,14 +253,14 @@ class GeneralHamiltonian(object):
                                                       self.coords[nonzero_elements[0][k]][0]) *\
                                               (self.coords[nonzero_elements[0][k]][1] +
                                                 self.coords[nonzero_elements[1][k]][1])
-                                              for k in xrange(len(nonzero_elements[0]))]))
+                                              for k in range(len(nonzero_elements[0]))]))
         elif gauge == 'landau_y':
             phase_matrix = np.exp(1j * conversion_factor * magnetic_B *
                                   np.array([0.5 * (self.coords[nonzero_elements[1][k]][0] +
                                                     self.coords[nonzero_elements[0][k]][0]) *\
                                              (self.coords[nonzero_elements[1][k]][1] -
                                                self.coords[nonzero_elements[0][k]][1])
-                                              for k in xrange(len(nonzero_elements[0]))]))
+                                              for k in range(len(nonzero_elements[0]))]))
 
         m_pot_data = self.mtot.data * phase_matrix
         m_pot = scipy.sparse.csr_matrix((m_pot_data, nonzero_elements), shape=(self.Ntot, self.Ntot))
@@ -278,20 +278,20 @@ class GeneralHamiltonian(object):
         import random
 
         random.seed(randseed)
-        vacan_position = [random.randrange(0.0, stop=Ntotal, step=1.0) for i in xrange(Nvac)]
-        print vacan_position
+        vacan_position = [random.randrange(0.0, stop=Ntotal, step=1.0) for i in range(Nvac)]
+        print(vacan_position)
         if sign_variation:
             if sublat_sim:
                 signs = -1. + 2.*np.mod(np.array(vacan_position), 2)
-            else: signs = [random.randrange(-1, stop=2, step=2.0) for i in xrange(Nvac)]
+            else: signs = [random.randrange(-1, stop=2, step=2.0) for i in range(Nvac)]
         else:
-            signs = [1.0 for i in xrange(Nvac)]
-        print signs
+            signs = [1.0 for i in range(Nvac)]
+        print(signs)
         if vactype=='single':
-            for i in xrange(Nvac):
+            for i in range(Nvac):
                 mt[vacan_position[i], vacan_position[i]] += E0 * np.sign(signs[i])
         if vactype=='double':
-            for i in xrange(Nvac):
+            for i in range(Nvac):
                 mt[vacan_position[i], vacan_position[i]] += E0
                 pos = random.choice([-1,1])
                 mt[vacan_position[i]+pos, vacan_position[i]+pos] -= E0 
@@ -318,7 +318,7 @@ class GeneralHamiltonian(object):
         if sortv:
             vsort = np.zeros(v.shape, dtype=complex)
 
-            for i in xrange(len(isort)):
+            for i in range(len(isort)):
                 vsort[:,i] = v[:,isort[i]]
 
             return wsort, vsort
@@ -356,7 +356,7 @@ class GeneralHamiltonian(object):
     def plot_bandstructure(self, krange = np.linspace(0.0,2.5,100), n_eigs=200, **kwrds):
         w = np.array([self.get_spec(k, num_eigs=n_eigs) for k in krange])
 
-        [plt.plot(krange, w[:,i],  ms=2, **kwrds) for i in xrange(len(w[0,:]))]
+        [plt.plot(krange, w[:,i],  ms=2, **kwrds) for i in range(len(w[0,:]))]
         #[plt.axhline(y = np.sign(n) * np.sqrt(2. * 1.6 * 10**(-19) * 
         #                                      1.05 * 10**(-34) * 0.82**2 * 
         #                                      10**12 * 300 * np.abs(n))/1.6*10**(19)) for n in range(-6,7)]
@@ -425,7 +425,7 @@ class HamiltonianTB(GeneralHamiltonian):
 
     @staticmethod
     def get_position(Nx, Ny, s=1, dx=1.0, dy=1.0):
-        return [[i*dx, j*dx, 0] for i in xrange(Nx) for k in xrange(s)  for j in xrange(Ny)]
+        return [[i*dx, j*dx, 0] for i in range(Nx) for k in range(s)  for j in range(Ny)]
 
 #end class HamiltonianTB
 
@@ -446,8 +446,8 @@ class HamiltonianGraphene(GeneralHamiltonian):
     @staticmethod
     def get_position(Nx, Ny, s=1, rescale=1.0):
 
-        coords = [HamiltonianGraphene.__calculate_coords_in_slice(j, rescale=rescale) for k in xrange(s) for j in xrange(Ny) ]
-        coords += [[coords[j][0] + i * mmg.dx / rescale, coords[j][1]] for i in xrange(1, Nx)  for k in xrange(s) for j in xrange(Ny)]
+        coords = [HamiltonianGraphene.__calculate_coords_in_slice(j, rescale=rescale) for k in range(s) for j in range(Ny) ]
+        coords += [[coords[j][0] + i * mmg.dx / rescale, coords[j][1]] for i in range(1, Nx)  for k in range(s) for j in range(Ny)]
 
         return coords
 
@@ -457,7 +457,7 @@ class HamiltonianGraphene(GeneralHamiltonian):
         ny = self.Ny
         if mist != 0:
             import sys
-            print  'Ny should be devidable by 4! Exiting'
+            print('Ny should be devidable by 4! Exiting')
             sys.exit(1)
             ny = self.Ny + 4 - mist
 
@@ -498,8 +498,8 @@ class HamiltonianGrapheneArmchair(GeneralHamiltonian):
 
     def get_position(self, s=1):
 
-        coords = [self.__calculate_coords_in_slice(j) for k in xrange(s)  for j in xrange(self.Ny)]
-        coords += [[coords[j][0] + i * mmg_a.dx, coords[j][1]] for i in xrange(1, self.Nx) for k in xrange(s)  for j in xrange(self.Ny)]
+        coords = [self.__calculate_coords_in_slice(j) for k in range(s)  for j in range(self.Ny)]
+        coords += [[coords[j][0] + i * mmg_a.dx, coords[j][1]] for i in range(1, self.Nx) for k in range(s)  for j in range(self.Ny)]
 
         return coords
 
@@ -593,7 +593,7 @@ class HamiltonianWithSpin(GeneralHamiltonian):
             Ez = g*mu_B * B = 0.12*B[T] meV
         """
         m0 = self.m0
-        for i in xrange(self.Ny/2):
+        for i in range(self.Ny/2):
             m0[i, i] += 0.00012 * magnetic_B
             m0[self.Ny/2+i, self.Ny/2+i] -= 0.00012 * magnetic_B
         mI = self.mI
@@ -614,8 +614,8 @@ class HamiltonianWithSpin(GeneralHamiltonian):
         d = np.sqrt(self.coords[1][0]**2 + self.coords[1][1]**2)
         pauli_mat = self.pauli_matrices()
 
-        for i in xrange(self.Ny/2):
-            for j in xrange(self.Ny/2, self.Ny):
+        for i in range(self.Ny/2):
+            for j in range(self.Ny/2, self.Ny):
                 dx0 = self.coords[j][0] - self.coords[i][0] + dxl * ham_id
                 dy0 = self.coords[j][1] - self.coords[i][1]
                 ann = np.sqrt(dx0**2 + dy0**2)
@@ -642,8 +642,8 @@ class HamiltonianWithSpin(GeneralHamiltonian):
         d = np.sqrt(self.coords[1][0]**2 + self.coords[1][1]**2)
         pauli_mat = self.pauli_matrices()
 
-        for i in xrange(self.Ny/2):
-            for j in xrange(self.Ny/2, self.Ny):
+        for i in range(self.Ny/2):
+            for j in range(self.Ny/2, self.Ny):
                 dx0 = self.coords[j][0] - self.coords[i][0] + dxl * ham_id
                 dy0 = self.coords[j][1] - self.coords[i][1]
                 ann = np.sqrt(dx0**2 + dy0**2)

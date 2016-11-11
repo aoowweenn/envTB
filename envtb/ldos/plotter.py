@@ -2,7 +2,7 @@ import numpy as np
 try:
     import matplotlib.pylab as plt
 except:
-    print 'Warning(plotter): no module matplotlib'
+    print('Warning(plotter): no module matplotlib')
     pass
 
 class Plotter:
@@ -30,13 +30,13 @@ class Plotter:
 
         maxel = max_el*np.max(vector)
         minel = min_el*np.max(vector)
-        print maxel, minel
+        print(maxel, minel)
         xmin = 0.0
         xmax = 0.0
         ymin = 0.0
         ymax = 0.0
 
-        for i in xrange(len(vector)):
+        for i in range(len(vector)):
 
             if maxel != minel:
                 msize = vector[i] * 180. / np.sqrt(np.sqrt(len(vector))) / (maxel-minel)
@@ -105,9 +105,9 @@ class Plotter:
         if maxel is None:
             maxel = np.max(m)
         
-        print np.min(m), np.max(m)
+        print(np.min(m), np.max(m))
                               
-        for i in xrange(len(m)):
+        for i in range(len(m)):
                         
             #if maxel != 0.0:
             msize = 500. / np.sqrt(len(m))

@@ -15,7 +15,7 @@ def electron_density_example(Nx = 20, Ny = 20, mu = 0.5, kT = 0.0025):
     
     dens = ham3.electron_density(mu, kT)
     
-    envtb.ldos.plotter.Plotter(range(ham.Ny), dens[ham.Ny:2*ham.Ny]).plotting()
+    envtb.ldos.plotter.Plotter(list(range(ham.Ny)), dens[ham.Ny:2*ham.Ny]).plotting()
     plt.show()
     
     envtb.ldos.plotter.Plotter().plot_density(dens, ham.coords)
@@ -88,7 +88,7 @@ def plot_ldos_graphene_example(Nx=20, Ny=30, magnetic_B=150.0):
     
     ham_nm = envtb.ldos.hamiltonian.HamiltonianGraphene(Ny, Nx)
     ham = ham_nm.apply_magnetic_field(magnetic_B)
-    print ham.mtot
+    print(ham.mtot)
     #ham.mtot[0,0] = 10.0
     #ham.mtot[0,1] = 0.0
     #ham.mtot[1,0] = 0.0
@@ -150,7 +150,7 @@ def plot_ldos_example_2Dpot(Nx=30, Ny=70):
                   0.01 * (ham.coords[ic][0]-x[0])**2)
     
     ham2 = ham.apply_potential(potential)
-    print ham2.mtot
+    print(ham2.mtot)
     
     envtb.ldos.plotter.Plotter().plot_potential(ham2, ham)
     plt.axes().set_aspect
@@ -191,7 +191,7 @@ def define_zigzag_ribbon_w90(nnfile, width, length, magnetic_B=None):
     
     ham4 = ham3.create_modified_hamiltonian(
         ham3.drop_dimension_from_cell_list(1),
-        usedorbitals=range(1, ham3.nrorbitals()-get_rid_of),
+        usedorbitals=list(range(1, ham3.nrorbitals()-get_rid_of)),
         magnetic_B=magnetic_B)
        
     ham5 = ham4.create_supercell_hamiltonian(
@@ -200,12 +200,12 @@ def define_zigzag_ribbon_w90(nnfile, width, length, magnetic_B=None):
         output_maincell_only=True)
     
     ham6 = ham5.create_modified_hamiltonian(
-        usedorbitals=range(1, ham5.nrorbitals()-1))
+        usedorbitals=list(range(1, ham5.nrorbitals()-1)))
     
     path = ham4.point_path([[0.0,0,0],[0.95,0,0]],100)
     ham4.plot_bandstructure(path, '' ,'d')
     data=ham4.bandstructure_data(path,basis='c',usedhoppingcells='all')
-    print data
+    print(data)
     #plt.ylim(0, 0.2)
     #plt.show()
     
@@ -242,7 +242,7 @@ def use_w90_example(Ny=30, Nx=30, magnetic_B=None):
     proc = pypar.size()
     myid = pypar.rank()
     node = pypar.get_processor_name()
-    print 'I am proc %d of %d on node %s' % (myid, proc, node)
+    print('I am proc %d of %d on node %s' % (myid, proc, node))
     
     local_dos=envtb.ldos.local_density.LocalDensityOfStates(ham)
     

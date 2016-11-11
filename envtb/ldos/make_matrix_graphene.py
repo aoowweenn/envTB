@@ -13,7 +13,7 @@ def make_H0(n, rescale=1., e0=-0.126, g1=-3.145, g2=-0.042, g3=-0.35):
     diags = np.array([0,-1,1,-2,2])
     m =  scipy.sparse.spdiags(np.array([a11, a12, a12, a23, a23]),
                                 diags, n, n, format="lil")
-    for i in xrange(0, n-2, 2):
+    for i in range(0, n-2, 2):
         m[i, i+3] = rescale * g3
         m[i+3, i] = rescale * g3
     return m.tocsr()
@@ -24,7 +24,7 @@ def make_HI(n, rescale=1., e0=-0.126, g1=-3.145, g2=-0.042, g3=-0.35):
     m = scipy.sparse.dia_matrix((rescale*g2 * np.ones(n, dtype=complex), np.array([0])), shape=(n,n))
     m = m.tolil()
 
-    for i in xrange(0, n-3, 4):
+    for i in range(0, n-3, 4):
         m[i+1, i] = rescale*g1
         m[i+2, i+3] = rescale*g1
         m[i+2, i+1] = rescale*g3
@@ -32,7 +32,7 @@ def make_HI(n, rescale=1., e0=-0.126, g1=-3.145, g2=-0.042, g3=-0.35):
         m[i+1, i+3] = rescale*g2
         m[i+2, i] = rescale*g2
 
-    for i in xrange(0, n-5, 4):
+    for i in range(0, n-5, 4):
         m[i+5, i+3] = rescale*g2
         m[i+2, i+4] = rescale*g2
         m[i+4, i+3] = rescale*g3

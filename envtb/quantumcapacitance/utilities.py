@@ -91,7 +91,7 @@ class LinearInterpolationNOGrid:
         else:
             self.__start=numpy.array(start,copy=False)  
             
-        if isinstance(grid,(int,long,float)): #http://stackoverflow.com/a/3501408/1447622
+        if isinstance(grid,(int,float)): #http://stackoverflow.com/a/3501408/1447622
             basisvecs=grid*numpy.eye(self.__dim)
         else:
             basisvecs=numpy.array(grid,copy=False)

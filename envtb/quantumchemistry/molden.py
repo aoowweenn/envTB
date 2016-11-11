@@ -348,7 +348,7 @@ class MolecularOrbitalSet:
         
         
     def print_orbital_list(self):
-        print self.molecular_orbitals
+        print(self.molecular_orbitals)
         
 
 class MoleculeGeometry:

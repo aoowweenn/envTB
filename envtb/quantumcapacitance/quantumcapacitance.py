@@ -41,7 +41,7 @@ class QuantumCapacitanceSelfConsistency:
                 old=elem.potential
                 elem.potential=elem.fermi_energy-elem.fermi_energy_charge_dependence(charge)/Constants.elem_charge
                 diff+=math.fabs(elem.potential-old)
-            print diff
+            print(diff)
             if diff < self.convergence_tol:
                 break
             
@@ -132,7 +132,7 @@ class QuantumCapacitanceSolver:
         basisvecs=[]
         for elem in self.elements:
             if status:
-                print elem.index()
+                print(elem.index())
             elem.potential=1
             inhom=self.container.createinhomogeneity()
             solution=self.solver(inhom)

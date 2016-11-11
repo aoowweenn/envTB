@@ -4,7 +4,7 @@ try:
     import matplotlib.pylab as plt
     from mpl_toolkits.mplot3d import Axes3D
 except:
-    print 'Warning(vector_potentian): no module matplotlib'
+    print('Warning(vector_potentian): no module matplotlib')
     pass
 #light_speed = 3 * 10**(8)
 
@@ -99,7 +99,7 @@ class VectorPotential:
         energy = np.fft.fftfreq(n, d=time_step) * 4.1357 * 10**(-15) 
 
         max_en = max(energy)
-        for i in xrange(0, len(energy)):
+        for i in range(0, len(energy)):
            if energy[i]<0:
               energy[i] += 2.*max_en
 
@@ -183,7 +183,7 @@ class FlatTopPulse(VectorPotential):
            self.Tramp = np.pi/self.frequency
         else:
            self.Tramp = Tramp
-        print self.Tramp
+        print(self.Tramp)
         self.pulse_duration = duration
 
     def envelope(self, t):
@@ -289,8 +289,8 @@ class GaussianEnvelopePulse(VectorPotential):
         self.direction = np.array(direction) / norm
         self.CEP = cep
         self.polarization=polarization
-        print 't0', self.t0
-        print 'tc', self.tc
+        print('t0', self.t0)
+        print('tc', self.tc)
 
     def envelope(self, t):
         return math.exp(-((t-self.tc)/self.t0)**2/0.7213)

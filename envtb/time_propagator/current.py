@@ -19,7 +19,7 @@ class CurrentOperator():
         wf_prime_x = []
         wf_prime_y = []
         
-        for i in xrange(len(wf.wf1d)-1):
+        for i in range(len(wf.wf1d)-1):
             if abs(wf.coords[i+1][0] - wf.coords[i][0]) > 0:
                 wf_prime_x.append((wf.wf1d[i+1]-wf.wf1d[i]) / (wf.coords[i+1][0] - wf.coords[i][0]))
             else:
@@ -54,7 +54,7 @@ class CurrentOperator():
         Jx = 0.0
         Jy = 0.0
         
-        for i in xrange(len(j_x)-1):
+        for i in range(len(j_x)-1):
             Jx += j_x[i] * (wf.coords[i+1][0]-wf.coords[i][0])
             Jy += j_y[i] * (wf.coords[i+1][1]-wf.coords[i][1])
         

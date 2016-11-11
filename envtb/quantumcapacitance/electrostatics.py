@@ -314,7 +314,7 @@ class Rectangle:
         if i+di>=0 and i+di<self.m and j+dj>=0 and j+dj<self.n:
             return self[i+di,j+dj]
         else:
-            for rect,offsets in self.container.rectangle_connections[self].items():
+            for rect,offsets in list(self.container.rectangle_connections[self].items()):
                 for offset in offsets:
                     if i+di>=offset[0] and i+di<offset[0]+rect.m and j+dj>=offset[1] and j+dj<offset[1]+rect.n:
                         return rect[i+di-offset[0],j+dj-offset[1]]
@@ -348,7 +348,7 @@ class Rectangle:
         """
         matrices={}
         inhomogeneity=numpy.zeros(len(self.elementlist))
-        for other_rect in self.container.rectangle_connections[self].keys():
+        for other_rect in list(self.container.rectangle_connections[self].keys()):
             matrices[other_rect]=scipy.sparse.lil_matrix((len(self.elementlist),len(other_rect.elementlist)))
         for element in self.elementlist:
             idx1=element.index()
@@ -462,11 +462,11 @@ class PeriodicContainer:
         imin,imax,jmin,jmax=0,0,0,0
         
         for rect in self.rectangle_list:
-            for other_rect,offsets in self.rectangle_connections[rect].items():
+            for other_rect,offsets in list(self.rectangle_connections[rect].items()):
                 offset=offsets[0] #Only "first" position of each rectangle will be considered for plot
                 abs_pos[other_rect]=abs_pos[rect][0]+offset[0],abs_pos[rect][1]+offset[1]
         
-        for rect,pos in abs_pos.items():
+        for rect,pos in list(abs_pos.items()):
             imin,imax=min(imin,pos[0]),max(imax,pos[0]+rect.m)
             jmin,jmax=min(jmin,pos[1]),max(jmax,pos[1]+rect.n)
             
@@ -475,7 +475,7 @@ class PeriodicContainer:
         datamatrix=numpy.ones((imax-imin,jmax-jmin))*numpy.nan
         
         rectangle_elementnumbers_range=self.rectangle_elementnumbers_range()
-        for rect,pos in abs_pos.items():
+        for rect,pos in list(abs_pos.items()):
             elements=rectangle_elementnumbers_range[rect]
             datamatrix[pos[0]-imin:pos[0]-imin+rect.m,
                        pos[1]-jmin:pos[1]-jmin+rect.n]=vec[elements[0]:elements[1]].reshape(rect.m,rect.n)
@@ -708,11 +708,11 @@ class Container:
         imin,imax,jmin,jmax=0,0,0,0
         
         for rect in self.rectangle_list:
-            for other_rect,offsets in self.rectangle_connections[rect].items():
+            for other_rect,offsets in list(self.rectangle_connections[rect].items()):
                 offset=offsets[0] #Only "first" position of each rectangle will be considered for plot
                 abs_pos[other_rect]=abs_pos[rect][0]+offset[0],abs_pos[rect][1]+offset[1]
         
-        for rect,pos in abs_pos.items():
+        for rect,pos in list(abs_pos.items()):
             imin,imax=min(imin,pos[0]),max(imax,pos[0]+rect.m)
             jmin,jmax=min(jmin,pos[1]),max(jmax,pos[1]+rect.n)
             
@@ -721,7 +721,7 @@ class Container:
         datamatrix=numpy.ones((imax-imin,jmax-jmin))*numpy.nan
         
         rectangle_elementnumbers_range=self.rectangle_elementnumbers_range()
-        for rect,pos in abs_pos.items():
+        for rect,pos in list(abs_pos.items()):
             elements=rectangle_elementnumbers_range[rect]
             datamatrix[pos[0]-imin:pos[0]-imin+rect.m,
                        pos[1]-jmin:pos[1]-jmin+rect.n]=vec[elements[0]:elements[1]].reshape(rect.m,rect.n)

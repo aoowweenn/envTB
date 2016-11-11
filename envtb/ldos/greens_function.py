@@ -1,8 +1,8 @@
-import hamiltonian
+from . import hamiltonian
 from scipy import sparse
 from scipy.sparse import linalg
 import numpy as np
-import make_matrix as mm
+from . import make_matrix as mm
 
 class GreensFunction:
     """
@@ -42,7 +42,7 @@ class GreensFunction:
         vec = np.eye(self.Ntot, self.Ntot)
         Green_solver = self.__inv_greens_matrix(self.E, self.H)
         
-        Green_diagonal = np.array([Green_solver(vec[:, i])[i] for i in xrange(self.Ntot)])
+        Green_diagonal = np.array([Green_solver(vec[:, i])[i] for i in range(self.Ntot)])
         
         return Green_diagonal
     

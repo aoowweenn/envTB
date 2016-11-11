@@ -60,7 +60,7 @@ def QuantumCapacitanceVoltageSweep(
     # i.e. graphene, sidegate etc.
     charges = []
     for v in voltages:
-        print v
+        print(v)
         for elem in voltage_elements:
             elem.potential = v
             # periodicrect[hoehe-1,y].fermi_energy=v #not needed!?
@@ -108,16 +108,16 @@ def QuantumCapacityOfGraphene2DModelWithSidegates(
     temperature = 300
     # graphenepos=hoehe/2-1
     my_gridsize = 1e-9
-    print "prepare system"
+    print("prepare system")
     periodicrect, lapl, grapheneelements, graphenesidegateelementsleft, \
         graphenesidegateelementsright, backgateelements = \
         PeriodicGraphenePatchWithGrapheneSidegatesSiO2Rectangle(
             breite, hoehe, temperature, graphenepos, graphenebreite,
             graphenesidegatebreite)
     percont = electrostatics.PeriodicContainer(periodicrect, 'y')
-    print "solve system"
+    print("solve system")
     solver, inhomogeneity = percont.lu_solver()
-    print "init qc"
+    print("init qc")
     # elem1d=[periodicrect[graphenepos,y] for y in
     # range(breite)]#+[periodicrect[0,0]]
     if graphenesidegate_behavior == 'metal':
@@ -130,7 +130,7 @@ def QuantumCapacityOfGraphene2DModelWithSidegates(
             graphenesidegateelementsleft, lapl)
 
     voltages = numpy.arange(vstart, vend, dv)
-    print "basisvecs"
+    print("basisvecs")
     qcsolver.refresh_basisvecs()
     capacitance_list = []
     classical_capacitance_list = []
@@ -144,18 +144,18 @@ def QuantumCapacityOfGraphene2DModelWithSidegates(
             elem.potential = vrightsidegate
             elem.fermi_energy = vrightsidegate
             
-        print "calculate classical capacitance"
+        print("calculate classical capacitance")
 
         classical_capacitance = ClassicalCapacitance(percont, lapl,
                          solver, backgateelements, grapheneelements)  
                          
-        print classical_capacitance      
+        print(classical_capacitance)      
 
-        print "loop " + str(vrightsidegate)
+        print("loop " + str(vrightsidegate))
         charges = QuantumCapacitanceVoltageSweep(
             qcsolver, percont, lapl, solver, voltages,
             backgateelements, grapheneelements)
-        print "end"
+        print("end")
 
         totalcharge = numpy.array([sum(x) for x in charges])
         capacitance2 = (totalcharge[2:]-totalcharge[:-2]) / \
@@ -207,7 +207,7 @@ def LoopQuantumCapacitanceWithSidegatesFixedSystem(
     voltages = None
     parameters = []
     for graphenebreite in (80,):
-        print "===Breite " + str(graphenebreite) + "======"
+        print("===Breite " + str(graphenebreite) + "======")
         hoehe = 600
         breite = 400
         # graphenebreite=10

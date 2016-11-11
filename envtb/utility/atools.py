@@ -6,8 +6,9 @@ import numpy as np
 import matplotlib.pylab as plt
 import envtb.utility.fourier as fourier
 import envtb.wannier90.w90hamiltonian as w90
-reload(w90)
-reload(fourier)
+import imp
+imp.reload(w90)
+imp.reload(fourier)
 from envtb.utility.fourier import GNRSimpleFourierTransform
 import copy
 import os
@@ -23,15 +24,15 @@ class NumericalData(object):
         try:
             self.eig = self.__get_energy_spectrum(file_name_eig)
         except:
-            print 'exception', file_name_eig
+            print('exception', file_name_eig)
         try:
             self.expansion = self.__get_expansion(file_name_exp)
         except:
-            print 'exception', file_name_exp
+            print('exception', file_name_exp)
         try:
             self.x, self.y, self.j_x, self.j_y = self.__get_time_coords_current(file_name_cc)
         except:
-            print 'exception', file_name_cc
+            print('exception', file_name_cc)
         try:
             self.j_x_f, self.j_y_f = self.__get_fourier_of_current(self.j_x, self.j_y)
         except:
@@ -40,11 +41,11 @@ class NumericalData(object):
         try:
             self.wf = self.get_wave_function_from_file(file_name_wf)[1]
         except:
-            print 'exception', file_name_wf
+            print('exception', file_name_wf)
         try:
             self.ro_0, self.ro = self.calculate_density_matrix(self.expansion)
         except:
-            print 'exception', 'den_matrix'
+            print('exception', 'den_matrix')
 
     def __get_energy_spectrum(self, file_name):
         f_eig = open(file_name, 'r')
@@ -90,8 +91,8 @@ class NumericalData(object):
         return tm, wf
 
     def calculate_density_matrix(self, c):
-        ro_0 = np.array([[c[0,i]*c[0,j].conjugate() for i in xrange(len(c[0,:]))] for j in xrange(len(c[0,:]))])
-        ro = np.array([[c[-2,i]*c[-2,j].conjugate() for i in xrange(len(c[-2,:]))] for j in xrange(len(c[-2,:]))])
+        ro_0 = np.array([[c[0,i]*c[0,j].conjugate() for i in range(len(c[0,:]))] for j in range(len(c[0,:]))])
+        ro = np.array([[c[-2,i]*c[-2,j].conjugate() for i in range(len(c[-2,:]))] for j in range(len(c[-2,:]))])
         return ro_0, ro
 
 # end class NumericalData
@@ -126,7 +127,7 @@ class PlotNumericalData(object):
     @staticmethod
     def plot_wave_function(wf, Nx, Ny, file_to_save='wf.png',figuresize=(10,10)):
         wf_resized = wf.reshape(Nx, Ny)
-        print wf_resized.shape
+        print(wf_resized.shape)
         if figuresize:
             plt.figure(figsize=figuresize) # in inches!
         plt.imshow(np.abs(wf_resized.T), interpolation='bilinear', aspect=0.42)
@@ -207,11 +208,11 @@ class PlotNumericalData(object):
         plt.ylabel(r'$t, s$', fontsize=26)
 
         plt.subplot(1,3,2)
-        print len(x), len(time)
+        print(len(x), len(time))
         try:
             plt.plot(x, time, label=r'x')
         except:
-            print len(x), len(time)
+            print(len(x), len(time))
             plt.plot(x[:-1], time, label=r'x')
         plt.ylim(0, max(time))
         norm = (max(np.array(x)-x[0]))/max(E_array[0])
@@ -362,7 +363,7 @@ class PlotNumericalData(object):
     def plot_wave_functions_stack(file_name, Nx, Ny, nx_s=3, ny_s=10, time_step=2, file_to_save='wf_stack.png', figuresize=(20,30)):
 
         plt.figure(figsize=figuresize)
-        for i in xrange(nx_s * ny_s):
+        for i in range(nx_s * ny_s):
             plt.subplot(ny_s,nx_s,i+1)
             tm, wf = NumericalData.get_wave_function_from_file(file_name, Nwf=i*time_step)
             PlotNumericalData.plot_wave_function(wf, Nx, Ny, file_to_save=None, figuresize=None)
@@ -488,7 +489,7 @@ def fast_plot(numdata, plotdata, save=False):
                     laser_freq_eV=numdata.dic_desc['laser_freq_eV'],
                     file_to_save='2_eig.png', figuresize=(10,10))
         except:
-            print 'Failed to plot!'
+            print('Failed to plot!')
             pass
         try:
             plotdata.plot_expansion(time=plotdata.time, A_array=plotdata.A_array,
@@ -496,27 +497,27 @@ def fast_plot(numdata, plotdata, save=False):
                     c=numdata.expansion,
                     file_to_save='3_exp.png', figuresize=(20,10))
         except:
-            print 'Failed to plot!'
+            print('Failed to plot!')
             pass
         try:
             plotdata.plot_density_matrix(ro_0=numdata.ro_0, ro=numdata.ro,
                     file_to_save='4_den.png', figuresize=(20,10))
         except:
-            print 'Failed to plot!'
+            print('Failed to plot!')
             pass
         try:
             plotdata.plot_coords(time=plotdata.time, A_array=plotdata.A_array,
                     E_array=plotdata.E_array, x=numdata.x, y=numdata.y,
                     file_to_save='5_coords.png', figuresize=(20,10))
         except:
-            print 'Failed to plot!'
+            print('Failed to plot!')
             pass
         try:
             plotdata.plot_current(time=plotdata.time, A_array=plotdata.A_array,
                     E_array=plotdata.E_array, j_x=numdata.j_x, j_y=numdata.j_y,
                     file_to_save='6_cur.png', figuresize=(20,10))
         except:
-            print 'Failed to plot!'
+            print('Failed to plot!')
             pass
         try:
             plotdata.plot_current_fourier(time=plotdata.time,
@@ -524,7 +525,7 @@ def fast_plot(numdata, plotdata, save=False):
                     laser_freq_eV=numdata.dic_desc['laser_freq_eV'],
                     file_to_save='7_cur_f.png', figuresize=(20,10))
         except:
-            print 'Failed to plot fourier!'
+            print('Failed to plot fourier!')
             pass
         try:
             plotdata.plot_wave_functions_stack(file_name=numdata.file_name_wf,
@@ -532,6 +533,6 @@ def fast_plot(numdata, plotdata, save=False):
                     nx_s=3, ny_s=10, time_step=2,
                     file_to_save='1_wf_stack.png', figuresize=(25,35))
         except:
-            print 'Failed to plot!'
+            print('Failed to plot!')
             pass
     return None
